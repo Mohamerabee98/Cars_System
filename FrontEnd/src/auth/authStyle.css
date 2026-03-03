@@ -1,0 +1,63 @@
+:root {
+    --main-bg: #1c2833;
+    --card-bg: #d1d3d4;
+    --primary-color: #3c5a8d;
+    --text-dark: #1f2d3d;
+    --text-muted: #6c757d;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+}
+
+.login-page {
+    background-color: var(--main-bg);
+    min-height: 100vh;
+}
+
+.login-card {
+    background-color: var(--card-bg);
+    width: 420px;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin: 20px 15px;
+}
+
+.login-title {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.login-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.custom-input {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    height: 45px;
+}
+
+.login-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 6px;
+    height: 45px;
+}
+
+.login-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.forgot-password {
+    font-size: 13px;
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.create-account {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
