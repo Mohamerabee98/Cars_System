@@ -1,60 +1,60 @@
 const STATS = [
-  { value: "1,200+", label: "Vehicles Listed" },
-  { value: "340+", label: "Trusted Dealers" },
-  { value: "98%", label: "Customer Satisfaction" },
-  { value: "24/7", label: "Expert Support" },
+  { value: "1,200+", label: "سيارة مدرجة" },
+  { value: "340+", label: "وكيل موثوق" },
+  { value: "98%", label: "رضا العملاء" },
+  { value: "24/7", label: "دعم متخصص" },
 ];
 
 const FEATURES = [
   {
     icon: "🛡️",
-    title: "Certified Quality",
-    desc: "Every car passes a 150-point inspection before being listed.",
+    title: "جودة معتمدة",
+    desc: "كل سيارة تجتاز فحصاً شاملاً من 150 نقطة قبل إدراجها.",
   },
   {
     icon: "💳",
-    title: "Easy Financing",
-    desc: "Get pre-approved in minutes with our partner lenders.",
+    title: "تمويل سهل",
+    desc: "احصل على موافقة مبدئية في دقائق بمساعدة شركائنا الماليين.",
   },
   {
     icon: "🔄",
-    title: "7-Day Returns",
-    desc: "Not happy? Return it within 7 days, no questions asked.",
+    title: "إرجاع خلال 7 أيام",
+    desc: "غير راضٍ؟ أعد السيارة خلال 7 أيام بدون أي أسئلة.",
   },
   {
     icon: "📍",
-    title: "Nationwide Delivery",
-    desc: "We deliver straight to your door anywhere in the country.",
+    title: "توصيل داخل المملكة",
+    desc: "نوصّل السيارة إلى بابك في أي مكان داخل المملكة.",
   },
 ];
 
 export default function StatsSection() {
   return (
-    <section className="bg-gray-50 py-20">
+    <section className="bg-slate-50 py-20 border-none" dir="rtl">
       <div className="max-w-7xl mx-auto px-6">
         {/* Stats row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
           {STATS.map((s) => (
             <div
               key={s.label}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center hover:shadow-md transition-shadow duration-200"
+              className="bg-white rounded-3xl shadow-lg shadow-slate-200/50 p-6 text-center hover:scale-105 transition-transform duration-300"
             >
-              <p className="text-3xl font-extrabold text-blue-600 mb-1">{s.value}</p>
-              <p className="text-sm text-gray-500 font-medium">{s.label}</p>
+              <p className="text-3xl font-black text-orange-600 mb-1">{s.value}</p>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Why Choose Us */}
         <div className="text-center mb-12">
-          <span className="text-blue-600 text-sm font-semibold uppercase tracking-widest">
-            Why AutoShow
+          <span className="text-orange-600 text-[11px] font-black uppercase tracking-[0.2em]">
+            لماذا اختارنا الآلاف؟
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">
-            The Smarter Way to Buy a Car
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mt-3 leading-tight">
+            الطريقة الأذكى لتملك سيارة أحلامك
           </h2>
-          <p className="text-gray-500 mt-3 max-w-lg mx-auto">
-            We've reimagined the car buying experience from the ground up — transparent, fast, and stress-free.
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-base font-medium leading-relaxed">
+            لقد صممنا تجربة تليق بك — حيث تلتقي الفخامة بالسهولة في كل خطوة من رحلتك.
           </p>
         </div>
 
@@ -62,11 +62,13 @@ export default function StatsSection() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+              className="bg-white rounded-[2rem] p-7 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <span className="text-3xl mb-4 block">{f.icon}</span>
-              <h3 className="font-semibold text-gray-900 mb-2">{f.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+              <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-2xl mb-5">
+                {f.icon}
+              </div>
+              <h3 className="text-lg font-black text-slate-900 mb-3">{f.title}</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>

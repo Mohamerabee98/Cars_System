@@ -5,57 +5,64 @@ import { useState } from "react";
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const linkClass = ({ isActive }) =>
-    isActive
-      ? "text-blue-600 font-semibold"
-      : "text-gray-600 hover:text-blue-600 transition-colors duration-200";
+  // Function to handle NavLink styling
+  const linkClass = () =>
+    `text-base font-medium transition-colors duration-200 text-gray-400 hover:text-orange-500`;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-2 text-blue-600 font-bold text-xl">
-          <Car className="w-6 h-6" />
-          <span className="tracking-tight">AutoShow</span>
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100" dir="rtl">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        {/* Logo Section */}
+        <NavLink to="/" className="flex items-center gap-3 group">
+          <div className="bg-orange-500 p-2 rounded-xl transition-transform group-hover:scale-105">
+            <Car className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-black font-bold text-2xl tracking-tight">Auto Show</span>
         </NavLink>
 
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex items-center gap-8 text-sm font-medium my-0">
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex items-center gap-10 my-0">
           <li>
             <NavLink to="/" end className={linkClass}>
-              Home
+              الرئيسية
             </NavLink>
           </li>
           <li>
             <NavLink to="/inventory" className={linkClass}>
-              Inventory
+              المعرض
             </NavLink>
           </li>
           <li>
-            <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-              Car Wash
+            <a
+              href="#"
+              className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+            >
+              غسيل السيارات
             </a>
           </li>
           <li>
-            <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-              Contact
+            <a
+              href="#"
+              className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+            >
+              تواصل معنا
             </a>
           </li>
         </ul>
 
-        {/* Right icons */}
-        <div className="flex items-center gap-2">
+        {/* Action Icons */}
+        <div className="flex items-center gap-4">
           <button
-            id="cart-btn"
-            className="p-2 rounded-xl text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
-            aria-label="Cart"
+            className="p-3 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors relative"
+            aria-label="سلة التسوق"
           >
             <ShoppingCart className="w-5 h-5" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
           </button>
+
           <button
-            id="user-btn"
-            className="p-2 rounded-xl text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
-            aria-label="User profile"
+            className="p-3 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors"
+            aria-label="الملف الشخصي"
           >
             <User className="w-5 h-5" />
           </button>
@@ -63,29 +70,46 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             id="mobile-menu-btn"
-            className="md:hidden p-2 rounded-xl text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 ml-1"
+            className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors"
             onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle menu"
+            aria-label="القائمة"
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Dropdown */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-4 text-sm font-medium">
-          <NavLink to="/" end className={linkClass} onClick={() => setMobileOpen(false)}>
-            Home
+        <div className="md:hidden bg-white border-t border-gray-50 px-6 py-6 flex flex-col gap-5 shadow-xl animate-in slide-in-from-top duration-300">
+          <NavLink
+            to="/"
+            end
+            className={linkClass}
+            onClick={() => setMobileOpen(false)}
+          >
+            الرئيسية
           </NavLink>
-          <NavLink to="/inventory" className={linkClass} onClick={() => setMobileOpen(false)}>
-            Inventory
+          <NavLink
+            to="/inventory"
+            className={linkClass}
+            onClick={() => setMobileOpen(false)}
+          >
+            المعرض
           </NavLink>
-          <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-            Car Wash
+          <a
+            href="#"
+            className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            غسيل السيارات
           </a>
-          <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
-            Contact
+          <a
+            href="#"
+            className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            تواصل معنا
           </a>
         </div>
       )}
