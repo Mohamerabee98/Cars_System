@@ -5,6 +5,7 @@ import "./App.css";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import AuthRoutes from "./routes/AuthRoutes";
+import DashboardRoutes from "./routes/DashboardRoutes";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/inventory" element={<InventoryPage />} />
         </Routes>
         <AuthRoutes />
+        <DashboardRoutes />
       </BrowserRouter>
     </>
   );
