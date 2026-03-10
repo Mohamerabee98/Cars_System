@@ -52,7 +52,7 @@ export const getCarById = async (req, res, next) => {
 
 // add car
 export const addCar = async (req, res, next) => {
-    const { company, color, price, status } = req.body;
+    const { company, color, price, status,image,stok } = req.body;
 
     if (!company || !color || !price)
        return next(new Error(`company, color and price are required`, { cause: 400 }));
@@ -61,7 +61,9 @@ export const addCar = async (req, res, next) => {
         company,
         color,
         price,
-        status
+        status,
+        image,
+        stok
     });
     return resMsg(res, 201, "Create Car Success", car)
 

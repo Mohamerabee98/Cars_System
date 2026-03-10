@@ -8,7 +8,9 @@ const Car = sequelize.define("Car", {
   company: DataTypes.STRING(50),
   color: DataTypes.STRING(50),
   price: DataTypes.FLOAT,
-  status: DataTypes.INTEGER,
+  status: DataTypes.STRING,
+  stok:DataTypes.INTEGER,
+  image:DataTypes.JSON
 });
 
 

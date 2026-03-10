@@ -1,12 +1,13 @@
 import {Router} from "express"
 import * as carService from "./car.service.js"
+import { asyncHandler } from "../../utils/asyncHandler.js";
 const router = Router();
 
-router.get("/cars",carService.getCars)
-router.get("/cars/:id",carService.getCarById)
-router.post("/cars",carService.addCar)
-router.put("/cars/:id",carService.updateCar)
-router.delete("/cars/:id",carService.deleteCar)
+router.get("/cars",asyncHandler(carService.getCars))
+router.get("/cars/:id",asyncHandler(carService.getCarById))
+router.post("/cars",asyncHandler(carService.addCar))
+router.put("/cars/:id",asyncHandler(carService.updateCar))
+router.delete("/cars/:id",asyncHandler(carService.deleteCar))
 
 
 
