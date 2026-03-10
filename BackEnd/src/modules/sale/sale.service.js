@@ -66,6 +66,9 @@ export const addSale = async (req, res, next) => {
     if (car.status === "sold")
         next(new Error(`This car is already sold`, { cause: 400 }));
 
+    if (car.stok <= 0)
+        return next(new Error("No stock available", { cause: 400 }));
+
     const sale = await Sale.create({
         sale_date: date,
         total_price: totalPrice,
@@ -73,7 +76,7 @@ export const addSale = async (req, res, next) => {
         employee_id: employeeId,
         car_id: carId
     });
-    await Car.update({ status: "sold" }, { where: { id: carId } })
+    await Car.update({ status: "sold", stok: car.stok - 1 }, { where: { id: carId } })
     return resMsg(res, 201, "Car Sale Success", sale)
 };
 
@@ -88,12 +91,12 @@ export const updateSale = async (req, res, next) => {
 };
 
 // ================= Delete Sales =================
-export const deleteSale = async (req, res,next) => {
+export const deleteSale = async (req, res, next) => {
     const { id } = req.params
     const sale = await Sale.findByPk(id);
     if (!sale)
         return next(new Error(`the sale with ${id} not found`, { cause: 404 }));
 
     await sale.destroy()
-    return resMsg(res,201, "sale deleted success", [])
+    return resMsg(res, 201, "sale deleted success", [])
 }
