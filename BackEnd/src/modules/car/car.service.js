@@ -21,9 +21,9 @@ export const getCars = async (req, res) => {
             filter.color = { [Op.like]: color.trim() };
 
         if (minPrice)
-            filter.price = { ...whereClause.price, [Op.gte]: +minPrice };
+            filter.price = { ...filter.price, [Op.gte]: +minPrice };
         if (maxPrice)
-            filter.price = { ...whereClause.price, [Op.lte]: +maxPrice };
+            filter.price = { ...filter.price, [Op.lte]: +maxPrice };
 
         const cars = await Car.findAll({ where: filter });
         if (cars.length === 0)
