@@ -66,7 +66,7 @@ export const addSale = async (req, res, next) => {
     if (car.status === "sold")
         next(new Error(`This car is already sold`, { cause: 400 }));
 
-    if (car.stok <= 0)
+    if (car.stock <= 0)
         return next(new Error("No stock available", { cause: 400 }));
 
     const sale = await Sale.create({
@@ -76,7 +76,7 @@ export const addSale = async (req, res, next) => {
         employee_id: employeeId,
         car_id: carId
     });
-    await Car.update({ status: "sold", stok: car.stok - 1 }, { where: { id: carId } })
+    await Car.update({ status: "sold", stock: car.stock - 1 }, { where: { id: carId } })
     return resMsg(res, 201, "Car Sale Success", sale)
 };
 
