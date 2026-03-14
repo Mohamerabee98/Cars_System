@@ -35,6 +35,7 @@ export const register = async (req, res ) => {
         name: newCustomer.name,
         email: newCustomer.email,
         phone: newCustomer.phone,
+        role:"customer"
       },
     });
 
@@ -42,9 +43,8 @@ export const register = async (req, res ) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // login
-
-
 export const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -72,12 +72,18 @@ export const Login = async (req, res) => {
       });
     };
 
-    const token = jwt.sign({name: user.name, email: user.email , role : user.role},"secret")
-
-    res.status(200).json({
-      message: "Login successful",
-      user: { name: user.name, email: user.email , phone : user.phone ,token},
-    });
+        const token = jwt.sign({ id: user.id, role: user.role }, "secret", { expiresIn: "7d" })
+        res.status(200).json({
+          message: "Login successful",
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            token
+          }
+        });
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

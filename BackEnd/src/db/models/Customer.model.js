@@ -15,5 +15,6 @@ const Customer = sequelize.define("Customer", {
 },
   national_id: DataTypes.STRING(20),
   password: DataTypes.STRING,
+  role:DataTypes.STRING
 });
 export default Customer;

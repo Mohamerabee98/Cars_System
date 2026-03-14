@@ -88,3 +88,4 @@ WashingMaterial.belongsToMany(Washing, {
   foreignKey: "material_id",
   otherKey: "washing_id",
 });
+
