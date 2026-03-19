@@ -10,7 +10,7 @@ export default function Topbar({ onOpenSidebar }) {
           onClick={onOpenSidebar}
           aria-label="Open menu"
           data-bs-toggle="offcanvas"
-          data-bs-target="#mobileSidebar"
+          data-bs-target="#dashboardSidebar"
         >
           <Menu size={18} />
         </button>
@@ -26,7 +26,6 @@ export default function Topbar({ onOpenSidebar }) {
       </div>
       <div className="text-end d-none d-lg-block">
         <div className="page-title">لوحة التحكم</div>
-        <div className="page-subtitle">إدارة العملاء</div>
       </div>
     </header>
   );

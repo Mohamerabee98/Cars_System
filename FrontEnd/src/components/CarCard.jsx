@@ -62,7 +62,7 @@ export default function CarCard({ car }) {
         </p>
 
         {/* View Details Button */}
-        <div className="mt-auto">
+        <div className="main-nav mt-auto">
           <Link
             to={`/car/${id}`}
             className="w-full bg-slate-50 hover:bg-slate-100 text-slate-900 text-sm font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 group/btn"

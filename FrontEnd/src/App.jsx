@@ -3,8 +3,6 @@ import HomePage from "./pages/HomePage";
 import InventoryPage from "./pages/InventoryPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
 import "./App.css";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
 import AuthRoutes from "./routes/AuthRoutes";
 import DashboardRoutes from "./routes/DashboardRoutes";
 

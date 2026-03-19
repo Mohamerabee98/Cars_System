@@ -4,22 +4,57 @@ import {
   Car,
   Boxes,
   Tags,
-  FileText,
   Users,
+  ShoppingCart,
+  PackagePlus,
+  FileText,
   Settings,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import Offcanvas from "bootstrap/js/dist/offcanvas";
 
 export default function Sidebar() {
-    const navItems = [
-  { label: "لوحة التحكم", icon: LayoutDashboard },
-  { label: "الحجوزات", icon: CalendarCheck },
-  { label: "السيارات", icon: Car },
-  { label: "المخزون", icon: Boxes },
-  { label: "الخدمات والأسعار", icon: Tags },
-  { label: "التقارير", icon: FileText },
-  { label: "العملاء", icon: Users },
-  { label: "الإعدادات", icon: Settings },
-];
+  const navItems = [
+    {
+      label: "لوحة التحكم",
+      to: "/dashboard",
+      icon: LayoutDashboard,
+      end: true,
+    },
+    { label: "الحجوزات", to: "/dashboard/bookings", icon: CalendarCheck },
+    { label: "السيارات", to: "/dashboard/cars", icon: Car },
+    { label: "المخزون", to: "/dashboard/inventory", icon: Boxes },
+    { label: "الخدمات والأسعار", to: "/dashboard/services-prices", icon: Tags },
+    { label: "العملاء", to: "/dashboard/customers", icon: Users },
+    { label: "المبيعات", to: "/dashboard/sales", icon: ShoppingCart },
+    {
+      label: "أضف إلى المخزون",
+      to: "/dashboard/add-to-inventory",
+      icon: PackagePlus,
+    },
+    { label: "التقارير", to: "/dashboard/reports", icon: FileText },
+    { label: "الإعدادات", to: "/dashboard/settings", icon: Settings },
+  ];
+
+ const handleCloseOffcanvas = () => {
+  const offcanvasEl = document.getElementById("dashboardSidebar");
+  if (!offcanvasEl) return;
+
+  const bsOffcanvas = Offcanvas.getOrCreateInstance(offcanvasEl);
+  bsOffcanvas.hide();
+
+  setTimeout(() => {
+    offcanvasEl.classList.remove("show");
+
+    document
+      .querySelectorAll(".offcanvas-backdrop")
+      .forEach((el) => el.remove());
+
+    document.body.classList.remove("modal-open");
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+  }, 200);
+};
 
   return (
     <div className="sidebar-wrap d-flex flex-column h-100">
@@ -30,15 +65,23 @@ export default function Sidebar() {
         </div>
       </div>
 
-     <nav className="sidebar-nav px-2 mt-3 flex-grow-1">
-        {navItems.map((item, idx) => {
+      <nav className="sidebar-nav px-2 mt-3 flex-grow-1">
+        {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = idx === 0; 
+
           return (
-            <button key={item.label} data-bs-dismiss="offcanvas" className={`nav-item ${isActive ? "active" : ""}`}>
+            <NavLink
+              key={item.label}
+              to={item.to}
+              end={item.end}
+              onClick={handleCloseOffcanvas}
+              className={({ isActive }) =>
+                `sidebar-link ${isActive ? "active" : ""}`
+              }
+            >
               <Icon size={18} />
-              {item.label}
-            </button>
+              <span>{item.label}</span>
+            </NavLink>
           );
         })}
       </nav>

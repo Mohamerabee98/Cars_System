@@ -1,3 +1,4 @@
+
 import "./authStyle.css";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -37,6 +38,11 @@ const onSubmit = async (values) => {
       alert(data.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة");
       return;
     }
+
+    console.log("This IS Token: ", data.user.token);
+    
+    
+    localStorage.setItem("token", data.user.token);
 
   
     localStorage.setItem("user", JSON.stringify(data.user));
