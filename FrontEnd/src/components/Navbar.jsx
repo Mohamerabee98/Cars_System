@@ -21,7 +21,7 @@ export default function Navbar() {
         </NavLink>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-10 my-0">
+        <ul className="main-nav hidden md:flex items-center gap-10 my-0">
           <li>
             <NavLink to="/" end className={linkClass}>
               الرئيسية

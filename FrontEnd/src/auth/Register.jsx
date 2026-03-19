@@ -1,3 +1,4 @@
+
 import "./authStyle.css";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -122,7 +123,7 @@ export default function Register() {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="abdo12@gmail.com"
+                  placeholder="ziademad@gmail.com"
                 />
                 {touched.email && errors.email && (
                   <div className="invalid-feedback d-block">{errors.email}</div>

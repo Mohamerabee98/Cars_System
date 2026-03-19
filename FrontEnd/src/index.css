@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+/* a {
+color: #1111119f !important;
+  text-decoration: none;
+} */
+
+
+.main-nav a{
+    color: #1111119f !important;
+    text-decoration: none;
+}
