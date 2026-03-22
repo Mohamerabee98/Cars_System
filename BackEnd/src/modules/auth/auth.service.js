@@ -27,6 +27,7 @@ export const register = async (req, res ) => {
       phone,
       national_id,
       password: hashedPassword,
+      role:"customer"
     });
 
     res.status(201).json({
