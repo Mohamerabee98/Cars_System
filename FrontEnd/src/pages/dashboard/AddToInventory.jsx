@@ -1,14 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
+import { uploadImages } from "../../utils/uploade";
 
 export default function AddToInventory() {
+
+  const [images, setImages] = useState([]);
+  const [preview, setPreview] = useState([]);
+
+
   const [formData, setFormData] = useState({
     company: "",
     color: "",
     price: "",
     status: "",
     stock: "",
-    imageUrl: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,11 +29,22 @@ export default function AddToInventory() {
     }));
   };
 
+  // ================= handle images =================
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    setImages(files);
+
+    const previewUrls = files.map(file => URL.createObjectURL(file));
+    setPreview(previewUrls);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
+      const urls = await uploadImages(images);
 
       const payload = {
         company: formData.company.trim(),
@@ -36,10 +52,7 @@ export default function AddToInventory() {
         price: Number(formData.price),
         status: formData.status,
         stock: Number(formData.stock),
-        image: formData.imageUrl
-          .split(",")
-          .map((url) => url.trim())
-          .filter(Boolean),
+        image: urls
       };
 
       console.log("Payload:", payload);
@@ -63,7 +76,6 @@ export default function AddToInventory() {
         price: "",
         status: "",
         stock: "",
-        imageUrl: "",
       });
 
       alert("تم حفظ السيارة بنجاح");
@@ -71,8 +83,8 @@ export default function AddToInventory() {
       console.error("Error:", error.response?.data || error.message);
       alert(
         error.response?.data?.message ||
-          error.response?.data?.error ||
-          "حصل خطأ أثناء حفظ السيارة"
+        error.response?.data?.error ||
+        "حصل خطأ أثناء حفظ السيارة"
       );
     } finally {
       setLoading(false);
@@ -86,8 +98,10 @@ export default function AddToInventory() {
       price: "",
       status: "",
       stock: "",
-      imageUrl: "",
     });
+    setImages([]);
+    setPreview([]);
+
   };
 
   return (
@@ -160,15 +174,20 @@ export default function AddToInventory() {
 
           <div className="inventory-field">
             <label>روابط الصور</label>
-            <textarea
-              name="imageUrl"
-              placeholder="حط لينك صورة أو أكتر، وافصل بينهم بفاصلة"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              rows="4"
-              required
+            <input
+              type="file"
+              multiple
+              onChange={handleImageChange}
             />
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              {preview.map((img, i) => (
+                <img key={i} src={img} width="80" />
+              ))}
+            </div>
           </div>
+
+
         </div>
       </div>
 
