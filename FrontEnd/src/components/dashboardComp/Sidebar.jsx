@@ -22,7 +22,7 @@ export default function Sidebar() {
       end: true,
     },
     { label: "الحجوزات", to: "/dashboard/bookings", icon: CalendarCheck },
-    { label: "السيارات", to: "/dashboard/cars", icon: Car },
+    { label: "المغسلة", to: "/dashboard/cars", icon: Car },
     { label: "المخزون", to: "/dashboard/inventory", icon: Boxes },
     { label: "الخدمات والأسعار", to: "/dashboard/services-prices", icon: Tags },
     { label: "العملاء", to: "/dashboard/customers", icon: Users },
@@ -61,7 +61,7 @@ export default function Sidebar() {
       <div className="sidebar-brand px-3 pt-3">
         <div className="brand-box">
           <div className="brand-title">نايل كلين للسيارات</div>
-          <div className="brand-subtitle">نظام ادارة فرع القاهرة</div>
+          <div className="brand-subtitle">نظام ادارة  </div>
         </div>
       </div>
 

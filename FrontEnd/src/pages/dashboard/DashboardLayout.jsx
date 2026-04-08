@@ -26,7 +26,7 @@ export default function DashboardLayout() {
       </div>
 
       <main className="dash-main">
-        <Topbar />
+        {/* <Topbar /> */}
         <div className="dash-content container-fluid"><Outlet /></div>
       </main>
 
