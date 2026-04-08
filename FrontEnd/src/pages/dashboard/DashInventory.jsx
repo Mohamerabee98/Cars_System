@@ -24,9 +24,28 @@ const DashInventory = () => {
   const API_URL = "http://localhost:3000/api/cars";
 
   const getCarId = (car) => car?._id || car?.id;
+
   const getModelLabel = (car) =>
     car?.model || car?.carModel || car?.company || "غير محدد";
+
   const getStatusLabel = (car) => car?.status?.trim() || "غير محدد";
+
+  const getCarImages = (imageValue) => {
+    if (!imageValue) return [];
+
+    if (Array.isArray(imageValue)) return imageValue;
+
+    if (typeof imageValue === "string") {
+      try {
+        const parsed = JSON.parse(imageValue);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    return [];
+  };
 
   const formatPrice = (price) => {
     if (price === undefined || price === null || price === "") return "-";
@@ -340,10 +359,8 @@ const DashInventory = () => {
                   const carId = getCarId(car);
                   const modelLabel = getModelLabel(car);
                   const statusLabel = getStatusLabel(car);
-                  const firstImage =
-                    Array.isArray(car.image) && car.image.length > 0 && car.image[0]
-                      ? car.image[0]
-                      : carPlaceholder;
+                  const images = getCarImages(car.image);
+                  const firstImage = images.length > 0 ? images[0] : carPlaceholder;
 
                   return (
                     <tr key={carId || Math.random()}>
