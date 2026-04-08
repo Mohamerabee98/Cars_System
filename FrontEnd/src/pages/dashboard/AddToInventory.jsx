@@ -187,7 +187,10 @@ export default function AddToInventory() {
 
   <div className="flex gap-2 flex-wrap mt-3 mx-auto">
     {preview.map((img, i) => (
-      <img key={i} src={img} width="80" className="ml-2 p-2 border-2 border-dashed border-amber-500" />
+      <div className="relative">
+        <img key={i} src={img} width="80" className="ml-2 p-2 border-2 border-dashed border-amber-500" />
+        <span className="absolute">X</span>
+      </div>
     ))}
   </div>
 </div>
