@@ -67,6 +67,7 @@ export default function AddToInventory() {
           },
         }
       );
+      
 
       console.log("Car saved:", response.data);
 
