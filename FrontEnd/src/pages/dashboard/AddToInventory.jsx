@@ -171,21 +171,25 @@ export default function AddToInventory() {
               required
             />
           </div>
+          <br />
+<div className="inventory-field  md:w-[180%]">
+  <div className="relative w-[75%] h-64 p-3 border-2 border-dashed border-amber-500 mx-auto flex justify-center items-center">
 
-          <div className="inventory-field">
-            <label>روابط الصور</label>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageChange}
-            />
+    <span className="text-4xl cursor-pointer">+</span>
+    <input
+      type="file"
+      multiple
+      onChange={handleImageChange}
+      className="absolute opacity-0 cursor-pointer"
+    />
+  </div>
 
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-              {preview.map((img, i) => (
-                <img key={i} src={img} width="80" />
-              ))}
-            </div>
-          </div>
+  <div className="flex gap-2 flex-wrap mt-3 mx-auto">
+    {preview.map((img, i) => (
+      <img key={i} src={img} width="80" className="ml-2 p-2 border-2 border-dashed border-amber-500" />
+    ))}
+  </div>
+</div>
 
 
         </div>
