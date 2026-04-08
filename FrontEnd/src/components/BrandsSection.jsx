@@ -15,7 +15,7 @@ export default function BrandsSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <span className="text-orange-600 text-sm font-black uppercase tracking-[0.2em]">
-            أبرز الماركات العالمية
+         أبرز الماركات العالمية
           </span>
           <h2 className="text-3xl font-black text-slate-900 mt-4">
             تصفّح حسب علامتك المفضلة
