@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink ,Link} from "react-router-dom";
 import { ShoppingCart, User, Car, Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -10,7 +10,7 @@ export default function Navbar() {
     `text-base font-medium transition-colors duration-200 text-gray-400 hover:text-orange-500`;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100" dir="rtl">
+    <nav className="main_nav sticky top-0 z-50 bg-white border-b border-gray-100" dir="rtl">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo Section */}
         <NavLink to="/" className="flex items-center gap-3 group">
@@ -21,7 +21,7 @@ export default function Navbar() {
         </NavLink>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-10 my-0">
+        <ul className="main-nav hidden md:flex items-center gap-10 my-0">
           <li>
             <NavLink to="/" end className={linkClass}>
               الرئيسية
@@ -33,20 +33,14 @@ export default function Navbar() {
             </NavLink>
           </li>
           <li>
-            <a
-              href="#"
-              className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
-            >
+            <NavLink to="/car-wash" className={linkClass}>
               غسيل السيارات
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a
-              href="#"
-              className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
-            >
+            <NavLink to="/contact" className={linkClass}>
               تواصل معنا
-            </a>
+            </NavLink>
           </li>
         </ul>
 
@@ -60,12 +54,13 @@ export default function Navbar() {
             <span className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
           </button>
 
-          <button
+          <NavLink
+            to="/profile"
             className="p-3 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors"
             aria-label="الملف الشخصي"
           >
             <User className="w-5 h-5" />
-          </button>
+          </NavLink>
 
           {/* Mobile hamburger */}
           <button
@@ -97,20 +92,20 @@ export default function Navbar() {
           >
             المعرض
           </NavLink>
-          <a
-            href="#"
-            className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+          <NavLink
+            to="/car-wash"
+            className={linkClass}
             onClick={() => setMobileOpen(false)}
           >
             غسيل السيارات
-          </a>
-          <a
-            href="#"
-            className="text-base font-medium text-gray-400 hover:text-orange-500 transition-colors"
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={linkClass}
             onClick={() => setMobileOpen(false)}
           >
             تواصل معنا
-          </a>
+          </NavLink>
         </div>
       )}
     </nav>
