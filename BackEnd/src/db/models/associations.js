@@ -7,6 +7,7 @@ import Payment from "./payment.model.js";
 import Washing from "./Washing.model.js";
 import Washing_Material from "./Washing_Material.model.js";
 import WashingMaterial from "./WashingMaterial.model.js";
+import Service from './service.model.js';
 
 // ================= Sales =================
 Customer.hasMany(Sale, {
@@ -55,6 +56,9 @@ Purchase.hasMany(Payment, {
   foreignKey: "purchase_id",
 });
 Payment.belongsTo(Purchase, { foreignKey: "purchase_id" });
+// =================   Service =================
+Service.hasMany(Washing, { foreignKey: "service_id" });
+Washing.belongsTo(Service, { foreignKey: "service_id" });
 
 // ================= Washing =================
 Customer.hasMany(Washing, {

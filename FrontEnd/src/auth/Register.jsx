@@ -1,3 +1,4 @@
+
 import "./authStyle.css";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -5,7 +6,7 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 const RegisterSchema = Yup.object({
-  fullName: Yup.string()
+  name: Yup.string()
     .required("الاسم الكامل مطلوب")
     .min(3, "الاسم يجب أن يكون 3 أحرف على الأقل"),
 
@@ -13,7 +14,11 @@ const RegisterSchema = Yup.object({
     .required("البريد الإلكتروني مطلوب")
     .email("صيغة البريد غير صحيحة"),
 
-  nationalId: Yup.string()
+  phone: Yup.string()
+    .required("رقم الهاتف مطلوب")
+    .matches(/^\d{11}$/, "رقم الهاتف يجب أن يكون 11 رقم"),
+
+  national_id: Yup.string()
     .required("الرقم القومي مطلوب")
     .matches(/^\d{14}$/, "الرقم القومي يجب أن يكون 14 رقم"),
 
@@ -25,18 +30,43 @@ const RegisterSchema = Yup.object({
     .required("تأكيد كلمة المرور مطلوب")
     .oneOf([Yup.ref("password")], "كلمة المرور غير متطابقة"),
 
-  terms: Yup.boolean()
-    .oneOf([true], "يجب الموافقة على الشروط والأحكام"),
+  terms: Yup.boolean().oneOf([true], "يجب الموافقة على الشروط والأحكام"),
 });
 
 export default function Register() {
+  const navigate = useNavigate();
+  const onSubmit = async (values) => {
+   
+  const payload = {
+  name: values.name,
+  email: values.email,
+  phone: values.phone,
+  national_id: values.national_id,
+  password: values.password,
+  confirmPassword: values.confirmPassword,
+  terms: values.terms,
+};
+    
 
-    const navigate = useNavigate();
+    try {
+      const res = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.message || "حدث خطأ أثناء التسجيل");
+        return;
+      }
 
-  const onSubmit = (values) => {
-    console.log("LOGIN DATA: ", values);
-
-    navigate("/");
+      alert("تم إنشاء الحساب بنجاح!");
+      navigate("/"); 
+    } catch (err) {
+      console.error(err);
+      alert("حدث خطأ في السيرفر، حاول مرة أخرى");
+    }
   };
 
 
@@ -46,50 +76,42 @@ export default function Register() {
         <div className="mb-1 fw-bold">AutoCRM</div>
         <h3 className="login-title">إنشاء حساب جديد</h3>
 
+       
         <Formik
           initialValues={{
-            fullName: "",
+            name: "",
             email: "",
-            nationalId: "",
+            phone: "",
+            national_id: "",
             password: "",
             confirmPassword: "",
             terms: false,
           }}
           validationSchema={RegisterSchema}
-            onSubmit={onSubmit}
+          onSubmit={onSubmit}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
+          {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
             <form className="mt-3" onSubmit={handleSubmit} noValidate>
-
-              {/* الاسم الكامل */}
+              {/* الاسم */}
               <div className="mb-3 text-end">
                 <label className="form-label">الاسم الكامل</label>
                 <input
                   type="text"
-                  name="fullName"
+                  name="name"
                   className={`form-control custom-input ${
-                    touched.fullName && errors.fullName ? "is-invalid" : ""
+                    touched.name && errors.name ? "is-invalid" : ""
                   }`}
-                  value={values.fullName}
+                  value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="ادخل اسمك بالكامل"
                 />
-                {touched.fullName && errors.fullName && (
-                  <div className="invalid-feedback d-block">
-                    {errors.fullName}
-                  </div>
+                {touched.name && errors.name && (
+                  <div className="invalid-feedback d-block">{errors.name}</div>
                 )}
               </div>
 
-              {/* الإيميل */}
+              {/* البريد الإلكتروني */}
               <div className="mb-3 text-end">
                 <label className="form-label">البريد الإلكتروني</label>
                 <input
@@ -101,12 +123,29 @@ export default function Register() {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="abdo12@gmail.com"
+                  placeholder="ziademad@gmail.com"
                 />
                 {touched.email && errors.email && (
-                  <div className="invalid-feedback d-block">
-                    {errors.email}
-                  </div>
+                  <div className="invalid-feedback d-block">{errors.email}</div>
+                )}
+              </div>
+
+              {/* الهاتف */}
+              <div className="mb-3 text-end">
+                <label className="form-label">رقم الهاتف</label>
+                <input
+                  type="text"
+                  name="phone"
+                  className={`form-control custom-input ${
+                    touched.phone && errors.phone ? "is-invalid" : ""
+                  }`}
+                  value={values.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="01012345678"
+                />
+                {touched.phone && errors.phone && (
+                  <div className="invalid-feedback d-block">{errors.phone}</div>
                 )}
               </div>
 
@@ -115,19 +154,17 @@ export default function Register() {
                 <label className="form-label">الرقم القومي</label>
                 <input
                   type="text"
-                  name="nationalId"
+                  name="national_id"
                   className={`form-control custom-input ${
-                    touched.nationalId && errors.nationalId ? "is-invalid" : ""
+                    touched.national_id && errors.national_id ? "is-invalid" : ""
                   }`}
-                  value={values.nationalId}
+                  value={values.national_id}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="30232010111233"
                 />
-                {touched.nationalId && errors.nationalId && (
-                  <div className="invalid-feedback d-block">
-                    {errors.nationalId}
-                  </div>
+                {touched.national_id && errors.national_id && (
+                  <div className="invalid-feedback d-block">{errors.national_id}</div>
                 )}
               </div>
 
@@ -146,9 +183,7 @@ export default function Register() {
                   placeholder="********"
                 />
                 {touched.password && errors.password && (
-                  <div className="invalid-feedback d-block">
-                    {errors.password}
-                  </div>
+                  <div className="invalid-feedback d-block">{errors.password}</div>
                 )}
               </div>
 
@@ -167,9 +202,7 @@ export default function Register() {
                   placeholder="********"
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
-                  <div className="invalid-feedback d-block">
-                    {errors.confirmPassword}
-                  </div>
+                  <div className="invalid-feedback d-block">{errors.confirmPassword}</div>
                 )}
               </div>
 

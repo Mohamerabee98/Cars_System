@@ -1,3 +1,4 @@
+
 import Sidebar from "../../components/dashboardComp/Sidebar";
 import Topbar from "../../components/dashboardComp/Topbar";
 import { Outlet } from "react-router-dom";
@@ -16,7 +17,8 @@ export default function DashboardLayout() {
       <div
         className="offcanvas offcanvas-end dash-offcanvas"
         tabIndex="-1"
-        id="mobileSidebar"
+          id="dashboardSidebar"
+
       >
         <div className="offcanvas-body p-0">
           <Sidebar />
@@ -24,7 +26,7 @@ export default function DashboardLayout() {
       </div>
 
       <main className="dash-main">
-        <Topbar />
+        {/* <Topbar /> */}
         <div className="dash-content container-fluid"><Outlet /></div>
       </main>
 

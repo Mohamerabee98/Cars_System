@@ -1,10 +1,11 @@
 import Customer from "../../db/models/Customer.model.js";
 import bcrypt from "bcrypt";
-export const register = async (req, res, next) => {
+import jwt from "jsonwebtoken"
+export const register = async (req, res ) => {
   try {
-    const { name, email, phone, national_id, password, confirmPassword } = req.body;
+    const { name, email, phone, national_id, password, confirmPassword , terms  } = req.body;
 
-    if (!name || !email || !phone || !national_id || !password || !confirmPassword) {
+     if (!name || !email || !phone || !national_id || !password || !confirmPassword || !terms) {
       return res.status(400).json({ message: "كل الحقول مطلوبه" });
     }
 
@@ -26,6 +27,7 @@ export const register = async (req, res, next) => {
       phone,
       national_id,
       password: hashedPassword,
+      role:"customer"
     });
 
     res.status(201).json({
@@ -34,18 +36,17 @@ export const register = async (req, res, next) => {
         name: newCustomer.name,
         email: newCustomer.email,
         phone: newCustomer.phone,
+        role:"customer"
       },
     });
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // login
-
-
-export const Login = async (req, res, next) => {
+export const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -70,15 +71,22 @@ export const Login = async (req, res, next) => {
       return res.status(401).json({
         message: "Email or password is incorrect",
       });
-    }
+    };
 
-    res.status(200).json({
-      message: "Login successful",
-      user: { name: user.name, email: user.email , phone : user.phone },
-    });
+        const token = jwt.sign({ id: user.id, role: user.role }, "secret", { expiresIn: "7d" })
+        res.status(200).json({
+          message: "Login successful",
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            token
+          }
+        });
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

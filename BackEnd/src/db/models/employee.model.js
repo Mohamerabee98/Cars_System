@@ -8,6 +8,8 @@ const Employee = sequelize.define("Employee", {
   name: DataTypes.STRING(50),
   job: DataTypes.STRING(50),
   email: DataTypes.STRING(50),
+  password:DataTypes.STRING,
+  role:DataTypes.STRING(20)
 });
 
 
