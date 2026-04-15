@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SlidersHorizontal, Search, ChevronDown } from "lucide-react";
 import { CARS, BRANDS, PRICE_RANGES, CONDITIONS } from "../data/cars";
 import CarCard from "./CarCard";
+import { useCar } from "../hook/car";
 
 function FilterDropdown({ label, options, value, onChange }) {
   return (
@@ -24,6 +25,7 @@ function FilterDropdown({ label, options, value, onChange }) {
 }
 
 export default function Inventory() {
+  const {car} = useCar()  
   const [search, setSearch] = useState("");
   const [brand, setBrand] = useState("All Brands");
   const [priceRange, setPriceRange] = useState("Any Price");
@@ -52,7 +54,6 @@ export default function Inventory() {
     return matchesSearch && matchesBrand && matchesCondition && matchesPrice;
   });
 
-  const visibleCars = filteredCars.slice(0, visibleCount);
   const hasMore = visibleCount < filteredCars.length;
 
   const resetFilters = () => {
@@ -120,9 +121,9 @@ export default function Inventory() {
 
       {/* Cars Grid */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        {visibleCars.length > 0 ? (
+        {car?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visibleCars.map((car) => (
+            {car.map((car) => (
               <CarCard key={car.id} car={car} />
             ))}
           </div>

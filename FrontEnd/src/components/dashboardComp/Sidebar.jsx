@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
-
+import { useProfile } from "../../hook/profile";
 export default function Sidebar() {
+const {user} = useProfile()
+
   const navItems = [
     {
       label: "لوحة التحكم",
@@ -91,7 +93,7 @@ export default function Sidebar() {
           <div className="d-flex align-items-center gap-2">
             <div className="user-avatar">م</div>
             <div className="text-end">
-              <div className="user-name">زياد عماد</div>
+              <div className="user-name">{user?.name}</div>
               <div className="user-role">مدير النظام</div>
             </div>
           </div>

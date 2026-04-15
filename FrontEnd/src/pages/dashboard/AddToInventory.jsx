@@ -67,7 +67,7 @@ export default function AddToInventory() {
           },
         }
       );
-      
+
 
       console.log("Car saved:", response.data);
 
@@ -173,27 +173,31 @@ export default function AddToInventory() {
             />
           </div>
           <br />
-<div className="inventory-field  md:w-[180%]">
-  <div className="relative w-[75%] h-64 p-3 border-2 border-dashed border-amber-500 mx-auto flex justify-center items-center">
+          <div className="inventory-field  md:w-[180%]">
+            <div className="relative w-[75%] h-64 p-3 border-2 border-dashed border-amber-500 mx-auto flex justify-center items-center">
 
-    <span className="text-4xl cursor-pointer">+</span>
-    <input
-      type="file"
-      multiple
-      onChange={handleImageChange}
-      className="absolute opacity-0 cursor-pointer"
-    />
-  </div>
+              <span className="text-4xl cursor-pointer">+</span>
+              <input
+                type="file"
+                multiple
+                onChange={handleImageChange}
+                className="absolute opacity-0 cursor-pointer"
+                required
+              />
+            </div>
 
-  <div className="flex gap-2 flex-wrap mt-3 mx-auto">
-    {preview.map((img, i) => (
-      <div className="relative">
-        <img key={i} src={img} width="80" className="ml-2 p-2 border-2 border-dashed border-amber-500" />
-        <span className="absolute">X</span>
-      </div>
-    ))}
-  </div>
-</div>
+            <div className="flex gap-2 flex-wrap mt-3 mx-auto">
+              {preview.map((img, i) => (
+                <div className="relative p-2">
+                  <img key={i} src={img} width="80" className="h-full ml-2 p-3  border-2 border-dashed border-amber-500" />
+                  <span className="absolute top-1 left-5 text-red-700 cursor-pointer"
+                    onClick={() => {
+                      setPreview(prev => prev.filter(item => item !== img))
+                    }}>X</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
 
         </div>
