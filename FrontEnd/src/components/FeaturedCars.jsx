@@ -1,11 +1,24 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CARS } from "../data/cars";
+import { Loader2 } from "lucide-react";
 import CarCard from "./CarCard";
 
-const FEATURED_IDS = [1, 5, 6,]; 
-
 export default function FeaturedCars() {
-  const featured = CARS.filter((c) => FEATURED_IDS.includes(c.id));
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/cars")
+      .then((r) => r.json())
+      .then((data) => {
+        const list = Array.isArray(data)
+          ? data
+          : data.cars ?? data.data ?? data.result ?? data.items ?? [];
+        setCars(list.slice(0, 3));
+      })
+      .catch(() => setCars([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <section id="featured" className="bg-white py-20 border-none" dir="rtl">
@@ -31,11 +44,21 @@ export default function FeaturedCars() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {featured.map((car) => (
-            <CarCard key={car.id} car={car} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+          </div>
+        ) : cars.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            {cars.map((car) => (
+              <CarCard key={car.id} car={car} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 text-slate-400">
+            <p className="font-medium">لا توجد سيارات متاحة حالياً</p>
+          </div>
+        )}
       </div>
     </section>
   );
