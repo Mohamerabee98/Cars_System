@@ -12,4 +12,4 @@ const Sale = sequelize.define("Sale", {
   employee_id: DataTypes.INTEGER,
 });
 
-export default Sale;
+export default Sale;  
