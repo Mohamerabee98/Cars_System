@@ -7,74 +7,53 @@ import Payment from "./payment.model.js";
 import Washing from "./Washing.model.js";
 import Washing_Material from "./Washing_Material.model.js";
 import WashingMaterial from "./WashingMaterial.model.js";
-import Service from './service.model.js';
+import Service from "./service.model.js";
+import WashingOrder from "./WashingOrder.model.js";
 
 // ================= Sales =================
-Customer.hasMany(Sale, {
-  foreignKey: "customer_id",
-});
+Customer.hasMany(Sale, { foreignKey: "customer_id" });
 Sale.belongsTo(Customer, { foreignKey: "customer_id" });
 
-Car.hasMany(Sale, {
-  foreignKey: "car_id",
-});
+Car.hasMany(Sale, { foreignKey: "car_id" });
 Sale.belongsTo(Car, { foreignKey: "car_id" });
 
-Employee.hasMany(Sale, {
-  foreignKey: "employee_id",
-});
+Employee.hasMany(Sale, { foreignKey: "employee_id" });
 Sale.belongsTo(Employee, { foreignKey: "employee_id" });
 
 // ================= Purchases =================
-Customer.hasMany(Purchase, {
-  foreignKey: "customer_id",
-});
+Customer.hasMany(Purchase, { foreignKey: "customer_id" });
 Purchase.belongsTo(Customer, { foreignKey: "customer_id" });
 
-Car.hasMany(Purchase, {
-  foreignKey: "car_id",
-});
+Car.hasMany(Purchase, { foreignKey: "car_id" });
 Purchase.belongsTo(Car, { foreignKey: "car_id" });
 
-Employee.hasMany(Purchase, {
-  foreignKey: "employee_id",
-});
+Employee.hasMany(Purchase, { foreignKey: "employee_id" });
 Purchase.belongsTo(Employee, { foreignKey: "employee_id" });
 
 // ================= Payments =================
-Customer.hasMany(Payment, {
-  foreignKey: "customer_id",
-});
+Customer.hasMany(Payment, { foreignKey: "customer_id" });
 Payment.belongsTo(Customer, { foreignKey: "customer_id" });
 
-Sale.hasMany(Payment, {
-  foreignKey: "sale_id",
-});
+Sale.hasMany(Payment, { foreignKey: "sale_id" });
 Payment.belongsTo(Sale, { foreignKey: "sale_id" });
 
-Purchase.hasMany(Payment, {
-  foreignKey: "purchase_id",
-});
+Purchase.hasMany(Payment, { foreignKey: "purchase_id" });
 Payment.belongsTo(Purchase, { foreignKey: "purchase_id" });
-// =================   Service =================
-Service.hasMany(Washing, { foreignKey: "service_id" });
-Washing.belongsTo(Service, { foreignKey: "service_id" });
+
+// ================= Service =================
+Service.hasMany(WashingOrder, { foreignKey: "service_id" });
+WashingOrder.belongsTo(Service, { foreignKey: "service_id" });
+
+// ================= WashingOrder =================
+Customer.hasMany(WashingOrder, { foreignKey: "customer_id" });
+WashingOrder.belongsTo(Customer, { foreignKey: "customer_id" });
+
+Employee.hasMany(WashingOrder, { foreignKey: "employee_id" });
+WashingOrder.belongsTo(Employee, { foreignKey: "employee_id" });
 
 // ================= Washing =================
-Customer.hasMany(Washing, {
-  foreignKey: "customer_id",
-});
-Washing.belongsTo(Customer, { foreignKey: "customer_id" });
-
-Car.hasMany(Washing, {
-  foreignKey: "car_id",
-});
-Washing.belongsTo(Car, { foreignKey: "car_id" });
-
-Employee.hasMany(Washing, {
-  foreignKey: "employee_id",
-});
-Washing.belongsTo(Employee, { foreignKey: "employee_id" });
+WashingOrder.hasOne(Washing, { foreignKey: "washing_order_id" });
+Washing.belongsTo(WashingOrder, { foreignKey: "washing_order_id" });
 
 // ================= WashingMaterial (M:N) =================
 Washing.belongsToMany(WashingMaterial, {
@@ -88,4 +67,3 @@ WashingMaterial.belongsToMany(Washing, {
   foreignKey: "material_id",
   otherKey: "washing_id",
 });
-

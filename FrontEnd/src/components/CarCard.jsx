@@ -4,8 +4,9 @@ import { Car, Palette, Gauge } from "lucide-react";
 
 export default function CarCard({ car }) {
   const { id, company, color, price, status, stok, image } = car;
-  const img = JSON.parse(image)
 
+console.log(image, typeof image);
+const parsedImage = image ? JSON.parse(image) : [];
   // status "1" = جديد | "0" = مستعمل
   const isNew = status === "1" || status === 1;
 
@@ -24,11 +25,12 @@ export default function CarCard({ car }) {
       <div className="relative aspect-video overflow-hidden m-2 rounded-2xl bg-slate-100">
         {image && !imgError ? (
           <img
-            src={img[0]}
-            alt={company}
-            onError={() => setImgError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+
+  src={parsedImage[0]}
+  alt={company}
+  onError={() => setImgError(true)}
+  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+/>
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-slate-100 to-slate-200">
             <Car className="w-12 h-12 text-slate-300" />
