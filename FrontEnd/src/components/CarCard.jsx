@@ -4,7 +4,7 @@ import { Car, Palette, Gauge } from "lucide-react";
 
 export default function CarCard({ car }) {
   const { id, company, color, price, status, stok, image } = car;
-console.log(image);
+  const img = JSON.parse(image)
 
   // status "1" = جديد | "0" = مستعمل
   const isNew = status === "1" || status === 1;
@@ -24,7 +24,7 @@ console.log(image);
       <div className="relative aspect-video overflow-hidden m-2 rounded-2xl bg-slate-100">
         {image && !imgError ? (
           <img
-            src={image[0]}
+            src={img[0]}
             alt={company}
             onError={() => setImgError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
