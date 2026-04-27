@@ -87,8 +87,8 @@ const DashInventory = () => {
       console.error("Delete error:", err.response?.data || err.message);
       alert(
         err.response?.data?.message ||
-          err.response?.data?.error ||
-          "حصل خطأ أثناء حذف العربية"
+        err.response?.data?.error ||
+        "حصل خطأ أثناء حذف العربية"
       );
     } finally {
       setDeleteLoadingId(null);
@@ -155,9 +155,9 @@ const DashInventory = () => {
         prev.map((item) =>
           getCarId(item) === carId
             ? {
-                ...item,
-                ...payload,
-              }
+              ...item,
+              ...payload,
+            }
             : item
         )
       );
@@ -167,8 +167,8 @@ const DashInventory = () => {
       console.error("Update error:", err.response?.data || err.message);
       alert(
         err.response?.data?.message ||
-          err.response?.data?.error ||
-          "حصل خطأ أثناء تعديل العربية"
+        err.response?.data?.error ||
+        "حصل خطأ أثناء تعديل العربية"
       );
     } finally {
       setUpdateLoadingId(null);
@@ -349,7 +349,15 @@ const DashInventory = () => {
                     <tr key={carId || Math.random()}>
                       <td className="text-end px-3 py-3">
                         <img
-                          src={firstImage}
+                          src={firstImage || car.image
+                            ? (() => {
+                              try {
+                                return JSON.parse(car.image)[0];
+                              } catch {
+                                return car.image;
+                              }
+                            })()
+                            : ""}
                           alt={car.company || "car"}
                           width="120"
                           height="84"
@@ -386,20 +394,20 @@ const DashInventory = () => {
                               statusLabel === "جديد"
                                 ? "#ecfdf3"
                                 : statusLabel === "مستعمل"
-                                ? "#fff7ed"
-                                : "#f3f4f6",
+                                  ? "#fff7ed"
+                                  : "#f3f4f6",
                             color:
                               statusLabel === "جديد"
                                 ? "#027a48"
                                 : statusLabel === "مستعمل"
-                                ? "#c2410c"
-                                : "#6b7280",
+                                  ? "#c2410c"
+                                  : "#6b7280",
                             border:
                               statusLabel === "جديد"
                                 ? "1px solid #abefc6"
                                 : statusLabel === "مستعمل"
-                                ? "1px solid #fed7aa"
-                                : "1px solid #d1d5db",
+                                  ? "1px solid #fed7aa"
+                                  : "1px solid #d1d5db",
                             fontWeight: 600,
                           }}
                         >
