@@ -34,11 +34,10 @@ export default function Inventory() {
   }, []);
 
   const filteredCars = cars.filter((car) => {
-    const searchLower = search.toLowerCase();
+    const q = search.toLowerCase();
     return (
-      (car.name ?? "").toLowerCase().includes(searchLower) ||
-      (car.description ?? "").toLowerCase().includes(searchLower) ||
-      (car.brand ?? "").toLowerCase().includes(searchLower)
+      (car.company ?? "").toLowerCase().includes(q) ||
+      (car.color ?? "").toLowerCase().includes(q)
     );
   });
 
