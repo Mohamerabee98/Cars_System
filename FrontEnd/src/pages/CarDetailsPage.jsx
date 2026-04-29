@@ -107,6 +107,18 @@ export default function CarDetailsPage() {
     "استبدال خلال 7 أيام",
   ];
 
+  // Parse image from API — stored as JSON array string or plain URL or null
+  const resolveImage = (raw) => {
+    if (!raw) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed[0] : String(parsed);
+    } catch {
+      return raw;
+    }
+  };
+  const mainImage = resolveImage(carData.image);
+
   const thumbnails = [
     "https://images.unsplash.com/photo-1621135802920-133df287f89c?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?q=80&w=2062&auto=format&fit=crop",
@@ -255,9 +267,9 @@ export default function CarDetailsPage() {
         <div className="lg:col-span-8 order-1 lg:order-2">
           {/* Main Image */}
           <div className="bg-white rounded-[2rem] p-2 shadow-sm mb-6 border border-slate-100 overflow-hidden">
-            {carData.image ? (
+            {mainImage ? (
               <img
-                src={carData.image}
+                src={mainImage}
                 alt={carData.company}
                 className="w-full aspect-[16/10] object-cover rounded-[1.8rem]"
               />

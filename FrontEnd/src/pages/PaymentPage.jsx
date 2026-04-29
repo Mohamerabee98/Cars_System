@@ -140,8 +140,6 @@ export default function PaymentPage() {
             السلة
           </button>
           <ChevronRight size={14} className="text-slate-300" />
-          <span className="text-slate-400">الشحن</span>
-          <ChevronRight size={14} className="text-slate-300" />
           <span className="text-orange-500 font-bold">الدفع</span>
         </nav>
 
