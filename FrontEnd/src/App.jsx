@@ -6,13 +6,16 @@ import CarDetailsPage from "./pages/CarDetailsPage";
 import CarWashPage from "./pages/CarWashPage";
 import ProfilePage from "./pages/ProfilePage";
 import ContactPage from "./pages/ContactPage";
+import CartPage from "./pages/CartPage";
+import PaymentPage from "./pages/PaymentPage";
 import "./App.css";
 import AuthRoutes from "./routes/AuthRoutes";
 import DashboardRoutes from "./routes/DashboardRoutes";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
-    <>
+    <CartProvider>
       <BrowserRouter>
         <Routes>
           {/* All public pages share the Layout (Navbar + Footer) */}
@@ -23,12 +26,14 @@ function App() {
             <Route path="/car-wash" element={<CarWashPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
           </Route>
         </Routes>
         <AuthRoutes />
         <DashboardRoutes />
       </BrowserRouter>
-    </>
+    </CartProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Car,
   ChevronLeft,
@@ -19,11 +19,16 @@ import {
   Gauge,
 } from "lucide-react";
 
+import { useCart } from "../context/CartContext";
+
 export default function CarDetailsPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart, isInCart } = useCart();
   const [carData, setCarData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedFeedback, setAddedFeedback] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -171,9 +176,30 @@ export default function CarDetailsPage() {
 
               {/* Actions */}
               <div className="flex flex-col gap-3">
-                <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-200">
+                <button
+                  onClick={() => {
+                    if (isInCart(carData.id)) {
+                      navigate("/cart");
+                    } else {
+                      addToCart(carData);
+                      setAddedFeedback(true);
+                      setTimeout(() => setAddedFeedback(false), 2000);
+                    }
+                  }}
+                  className={`w-full font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg ${
+                    isInCart(carData.id)
+                      ? "bg-green-500 hover:bg-green-600 text-white shadow-green-200"
+                      : "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200"
+                  }`}
+                >
                   <ShoppingCart size={20} />
-                  <span>إضافة إلى السلة</span>
+                  <span>
+                    {isInCart(carData.id)
+                      ? "عرض السلة ←"
+                      : addedFeedback
+                      ? "✓ تمت الإضافة!"
+                      : "إضافة إلى السلة"}
+                  </span>
                 </button>
                 <button className="w-full bg-slate-50 hover:bg-slate-100 text-slate-900 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-100">
                   <Calendar size={20} />
