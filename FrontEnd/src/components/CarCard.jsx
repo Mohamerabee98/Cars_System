@@ -4,6 +4,7 @@ import { Car, Palette, Gauge } from "lucide-react";
 
 export default function CarCard({ car }) {
   const { id, company, color, price, status, stok, image } = car;
+
 console.log(image, typeof image);
 const parsedImage = image ? JSON.parse(image) : [];
   // status "1" = جديد | "0" = مستعمل
@@ -24,6 +25,7 @@ const parsedImage = image ? JSON.parse(image) : [];
       <div className="relative aspect-video overflow-hidden m-2 rounded-2xl bg-slate-100">
         {image && !imgError ? (
           <img
+
   src={parsedImage[0]}
   alt={company}
   onError={() => setImgError(true)}
