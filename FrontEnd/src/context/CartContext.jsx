@@ -1,9 +1,24 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext(null);
 
+const STORAGE_KEY = "autoshow_cart";
+
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
+  // Initialise from localStorage on first render
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist every change to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
 
   /** Add a car to cart — ignore duplicates */
   const addToCart = (car) => {
@@ -18,8 +33,11 @@ export function CartProvider({ children }) {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  /** Clear entire cart */
-  const clearCart = () => setCartItems([]);
+  /** Clear entire cart + storage */
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem(STORAGE_KEY);
+  };
 
   /** Check if a car is already in the cart */
   const isInCart = (id) => cartItems.some((item) => item.id === id);
