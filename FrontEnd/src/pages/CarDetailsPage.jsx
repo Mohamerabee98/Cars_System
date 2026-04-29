@@ -93,7 +93,7 @@ export default function CarDetailsPage() {
     { label: "الشركة", value: carData.company },
     { label: "اللون", value: carData.color },
     { label: "الحالة", value: isNew ? "جديد" : "مستعمل" },
-    { label: "المسافة المقطوعة", value: carData.stok ? `${Number(carData.stok).toLocaleString()} km` : "—" },
+    { label: "المسافة المقطوعة", value: carData.stock ? `${Number(carData.stock).toLocaleString()} km` : null },
     { label: "كود السيارة", value: `#${carData.id}` },
     { label: "السعر", value: formattedPrice },
   ].filter((s) => s.value);
@@ -166,11 +166,11 @@ export default function CarDetailsPage() {
                 </div>
               )}
 
-              {/* Stok/Mileage */}
-              {!isNew && carData.stok && (
+              {/* Mileage */}
+              {!isNew && carData.stock && (
                 <div className="flex items-center gap-2 mb-5 text-slate-500">
                   <Gauge size={14} />
-                  <span className="text-sm font-medium">{Number(carData.stok).toLocaleString()} km</span>
+                  <span className="text-sm font-medium">{Number(carData.stock).toLocaleString()} km</span>
                 </div>
               )}
 
@@ -201,10 +201,7 @@ export default function CarDetailsPage() {
                       : "إضافة إلى السلة"}
                   </span>
                 </button>
-                <button className="w-full bg-slate-50 hover:bg-slate-100 text-slate-900 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-100">
-                  <Calendar size={20} />
-                  <span>حجز تجربة قيادة</span>
-                </button>
+
                 <Link
                   to="/inventory"
                   className="w-full bg-white hover:bg-slate-50 text-slate-500 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-100"
