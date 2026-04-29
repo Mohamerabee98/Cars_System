@@ -20,7 +20,7 @@ const parsedImage = image ? JSON.parse(image) : [];
       className="car_card bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col h-full"
       dir="rtl"
     >
-      {/* ── Image ── */}
+      {/* ── Image ── */} 
       <div className="relative aspect-video overflow-hidden m-2 rounded-2xl bg-slate-100">
         {image && !imgError ? (
           <img
