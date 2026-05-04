@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Car, Menu, X } from "lucide-react";
+import { CalendarCheck, User, Car, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
 
@@ -40,13 +40,13 @@ export default function Navbar() {
 
         {/* Action Icons */}
         <div className="flex items-center gap-4">
-          {/* Cart button with live badge */}
+          {/* Bookings button with live badge */}
           <button
-            onClick={() => navigate("/cart")}
+            onClick={() => navigate("/bookings")}
             className="p-3 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors relative"
-            aria-label="سلة التسوق"
+            aria-label="حجوزات السيارات"
           >
-            <ShoppingCart className="w-5 h-5" />
+            <CalendarCheck className="w-5 h-5" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white">
                 {cartItems.length}
@@ -82,11 +82,11 @@ export default function Navbar() {
           <NavLink to="/car-wash" className={linkClass} onClick={() => setMobileOpen(false)}>غسيل السيارات</NavLink>
           <NavLink to="/contact" className={linkClass} onClick={() => setMobileOpen(false)}>تواصل معنا</NavLink>
           <NavLink
-            to="/cart"
+            to="/bookings"
             className={linkClass}
             onClick={() => setMobileOpen(false)}
           >
-            السلة {cartItems.length > 0 && `(${cartItems.length})`}
+            حجوزاتي {cartItems.length > 0 && `(${cartItems.length})`}
           </NavLink>
         </div>
       )}

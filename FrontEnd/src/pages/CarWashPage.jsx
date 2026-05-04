@@ -7,9 +7,16 @@ import {
   Star,
   Loader2,
   AlertCircle,
+  Car,
+  Hash,
+  CalendarCheck,
+  X,
+  ChevronRight,
 } from "lucide-react";
 
-// Map category names to icons (fallback since API doesn't return icons)
+const BASE_URL = "http://localhost:3000";
+
+// Map category names to icons
 const categoryIcons = {
   external: <Droplets size={18} className="text-orange-500" />,
   steam: <Wind size={18} className="text-orange-500" />,
@@ -32,8 +39,220 @@ const categoryImages = {
     "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?q=80&w=2073&auto=format&fit=crop",
 };
 
+/* ── Order Modal ─────────────────────────────────────────────────────────── */
+function OrderModal({ service, onClose }) {
+  const [form, setForm] = useState({ plate_number: "", car_type: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [phase, setPhase] = useState("form"); // "form" | "success" | "error"
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.plate_number.trim() || !form.car_type.trim()) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setErrorMsg("يجب تسجيل الدخول أولاً لإتمام الطلب.");
+      setPhase("error");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${BASE_URL}/orders/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          plate_number: form.plate_number,
+          car_type: form.car_type,
+          service_id: service.id,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "حدث خطأ في إنشاء الطلب");
+      }
+
+      setPhase("success");
+    } catch (err) {
+      setErrorMsg(err.message);
+      setPhase("error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div
+        className="bg-white rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden"
+        dir="rtl"
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition"
+        >
+          <X size={16} />
+        </button>
+
+        {/* ── Success Screen ── */}
+        {phase === "success" && (
+          <div className="flex flex-col items-center justify-center p-10 text-center">
+            <div className="relative mb-6">
+              <div className="w-24 h-24 rounded-full bg-emerald-50 flex items-center justify-center">
+                <CheckCircle2 size={52} className="text-emerald-500" />
+              </div>
+              <div className="absolute inset-0 rounded-full border-2 border-emerald-400/30 animate-ping" />
+            </div>
+            <h2 className="text-2xl font-black text-slate-900 mb-2">تم إرسال طلبك! 🎉</h2>
+            <p className="text-slate-500 text-sm leading-relaxed mb-1">
+              طلبك لخدمة <span className="font-bold text-orange-500">{service.name}</span> تم بنجاح.
+            </p>
+            <p className="text-slate-400 text-xs mb-8">
+              سيتم التواصل معك قريباً لتأكيد الموعد.
+            </p>
+            <button
+              onClick={onClose}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-200"
+            >
+              حسناً، شكراً!
+            </button>
+          </div>
+        )}
+
+        {/* ── Error Screen ── */}
+        {phase === "error" && (
+          <div className="flex flex-col items-center justify-center p-10 text-center">
+            <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center mb-5">
+              <AlertCircle size={40} className="text-red-400" />
+            </div>
+            <h2 className="text-xl font-black text-slate-900 mb-2">حدث خطأ</h2>
+            <p className="text-slate-500 text-sm mb-8 leading-relaxed">{errorMsg}</p>
+            <button
+              onClick={() => setPhase("form")}
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition"
+            >
+              حاول مرة أخرى
+            </button>
+          </div>
+        )}
+
+        {/* ── Form Screen ── */}
+        {phase === "form" && (
+          <>
+            {/* Header */}
+            <div className="bg-gradient-to-l from-orange-50 to-white p-6 border-b border-slate-100">
+              <span className="text-[10px] font-black text-orange-500 bg-orange-100 px-2.5 py-0.5 rounded-full mb-2 inline-block">
+                طلب جديد
+              </span>
+              <h2 className="text-xl font-black text-slate-900 mb-0.5">{service.name}</h2>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-orange-500">{service.price}</span>
+                <span className="text-sm text-slate-400">ج.م</span>
+              </div>
+            </div>
+
+            {/* Form Body */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-5">
+              {/* Plate Number */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  رقم اللوحة <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="مثال: ABC 1234"
+                    value={form.plate_number}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, plate_number: e.target.value }))
+                    }
+                    required
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 pr-11 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+                  />
+                  <Hash
+                    size={16}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"
+                  />
+                </div>
+              </div>
+
+              {/* Car Type */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  نوع السيارة <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="مثال: BMW X5"
+                    value={form.car_type}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, car_type: e.target.value }))
+                    }
+                    required
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 pr-11 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+                  />
+                  <Car
+                    size={16}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"
+                  />
+                </div>
+              </div>
+
+              {/* Service (read-only) */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  الخدمة المختارة
+                </label>
+                <div className="flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-xl px-4 py-3">
+                  <CheckCircle2 size={16} className="text-orange-500 flex-shrink-0" />
+                  <span className="text-sm font-bold text-orange-700">{service.name}</span>
+                  {service.duration && (
+                    <span className="text-[10px] text-orange-400 mr-auto">
+                      ⏱ {service.duration} دقيقة
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-orange-200 text-sm mt-2"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" />
+                    جاري إرسال الطلب...
+                  </>
+                ) : (
+                  <>
+                    <CalendarCheck size={18} />
+                    تأكيد الطلب
+                    <ChevronRight size={16} />
+                  </>
+                )}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Page ───────────────────────────────────────────────────────────── */
 export default function CarWashPage() {
   const [selectedService, setSelectedService] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,20 +261,13 @@ export default function CarWashPage() {
     const getAllServices = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const response = await fetch("http://localhost:3000/api", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await fetch(`${BASE_URL}/api`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error(`فشل تحميل الخدمات (${response.status})`);
-        }
-
         const data = await response.json();
         setServices(data.data);
-        console.log(data)
       } catch (err) {
         console.error(err);
         setError(err.message || "حدث خطأ أثناء تحميل الخدمات");
@@ -63,17 +275,28 @@ export default function CarWashPage() {
         setLoading(false);
       }
     };
-
-
     getAllServices();
   }, []);
 
+  const handleSelectService = (service) => {
+    setSelectedService(service);
+    setShowModal(true);
+  };
+
   return (
-    <div
-      className="min-h-screen bg-slate-50 font-['Inter',_sans-serif]"
-      dir="rtl"
-    >
-      {/* ─── Hero Section ─── */}
+    <div className="min-h-screen bg-slate-50 font-['Inter',_sans-serif]" dir="rtl">
+      {/* ── Order Modal ── */}
+      {showModal && selectedService && (
+        <OrderModal
+          service={selectedService}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedService(null);
+          }}
+        />
+      )}
+
+      {/* ── Hero Section ── */}
       <div className="relative h-[320px] overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?q=80&w=2073&auto=format&fit=crop"
@@ -92,7 +315,7 @@ export default function CarWashPage() {
         </div>
       </div>
 
-      {/* ─── Services Section ─── */}
+      {/* ── Services Section ── */}
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-black text-slate-900 mb-2">
@@ -104,7 +327,7 @@ export default function CarWashPage() {
           </p>
         </div>
 
-        {/* ─── Loading State ─── */}
+        {/* Loading */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Loader2 size={40} className="text-orange-500 animate-spin" />
@@ -112,7 +335,7 @@ export default function CarWashPage() {
           </div>
         )}
 
-        {/* ─── Error State ─── */}
+        {/* Error */}
         {!loading && error && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <AlertCircle size={40} className="text-red-400" />
@@ -126,22 +349,19 @@ export default function CarWashPage() {
           </div>
         )}
 
-        {/* ─── Empty State ─── */}
+        {/* Empty */}
         {!loading && !error && services.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <p className="text-slate-400 text-base">
-              لا توجد خدمات متاحة حالياً
-            </p>
+            <p className="text-slate-400 text-base">لا توجد خدمات متاحة حالياً</p>
           </div>
         )}
 
-        {/* ─── Services Grid ─── */}
+        {/* Services Grid */}
         {!loading && !error && services.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {services.map((service) => {
               const category = service.category?.toLowerCase() || "default";
-              const icon =
-                categoryIcons[category] || categoryIcons["default"];
+              const icon = categoryIcons[category] || categoryIcons["default"];
               const image =
                 service.image ||
                 categoryImages[category] ||
@@ -150,11 +370,7 @@ export default function CarWashPage() {
               return (
                 <div
                   key={service.id}
-                  className={`bg-white rounded-3xl border-2 overflow-hidden cursor-pointer transition-all shadow-sm hover:shadow-xl group ${
-                    selectedService?.id === service.id
-                      ? "border-orange-500 shadow-lg shadow-orange-100"
-                      : "border-slate-100"
-                  }`}
+                  className="bg-white rounded-3xl border-2 border-slate-100 overflow-hidden shadow-sm hover:shadow-xl hover:border-orange-200 hover:-translate-y-0.5 transition-all duration-300 group flex flex-col"
                 >
                   {/* Service Image */}
                   <div className="relative h-40 overflow-hidden">
@@ -171,7 +387,7 @@ export default function CarWashPage() {
                   </div>
 
                   {/* Service Content */}
-                  <div className="p-4">
+                  <div className="p-4 flex flex-col flex-1">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1.5">
                         {icon}
@@ -183,10 +399,7 @@ export default function CarWashPage() {
                         <span className="text-xl font-black text-orange-500">
                           {service.price}
                         </span>
-                        <span className="text-xs text-slate-400 font-medium">
-                          {" "}
-                          ج.م
-                        </span>
+                        <span className="text-xs text-slate-400 font-medium"> ج.م</span>
                       </div>
                     </div>
 
@@ -196,29 +409,16 @@ export default function CarWashPage() {
                       </p>
                     )}
 
-                    <p className="text-[11px] text-slate-500 leading-relaxed mb-4">
+                    <p className="text-[11px] text-slate-500 leading-relaxed mb-4 flex-1">
                       {service.description}
                     </p>
 
                     <button
-                      className={`w-full py-2.5 rounded-xl text-sm font-bold transition-all ${
-                        selectedService?.id === service.id
-                          ? "bg-orange-500 text-white shadow-md shadow-orange-200"
-                          : "bg-slate-50 hover:bg-orange-50 text-slate-700 hover:text-orange-500"
-                      }`}
-                      onClick={() =>
-                        setSelectedService(
-                          selectedService?.id === service.id ? null : service
-                        )
-                      }
+                      onClick={() => handleSelectService(service)}
+                      className="w-full py-2.5 rounded-xl text-sm font-bold transition-all bg-slate-50 hover:bg-orange-500 text-slate-700 hover:text-white border border-slate-100 hover:border-orange-500 flex items-center justify-center gap-1.5"
                     >
-                      {selectedService?.id === service.id ? (
-                        <span className="flex items-center justify-center gap-1.5">
-                          <CheckCircle2 size={15} /> تم الاختيار
-                        </span>
-                      ) : (
-                        "اختيار"
-                      )}
+                      <CalendarCheck size={15} />
+                      احجز الآن
                     </button>
                   </div>
                 </div>
@@ -227,24 +427,6 @@ export default function CarWashPage() {
           </div>
         )}
       </div>
-
-      {/* ─── Selected Service Summary ─── */}
-      {selectedService && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-md">
-          <div className="bg-slate-900 text-white rounded-2xl px-5 py-4 flex items-center justify-between shadow-2xl">
-            <div>
-              <p className="text-xs text-slate-400 mb-0.5">الخدمة المختارة</p>
-              <p className="font-bold text-base">{selectedService.name}</p>
-            </div>
-            <div className="text-left">
-              <span className="text-2xl font-black text-orange-400">
-                {selectedService.price}
-              </span>
-              <span className="text-xs text-slate-400"> ج.م</span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

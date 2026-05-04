@@ -26,6 +26,8 @@ function App() {
             <Route path="/car-wash" element={<CarWashPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/contact" element={<ContactPage />} />
+            {/* Bookings routes — /cart still works as alias */}
+            <Route path="/bookings" element={<CartPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/payment" element={<PaymentPage />} />
           </Route>
@@ -38,4 +40,3 @@ function App() {
 }
 
 export default App;
-
