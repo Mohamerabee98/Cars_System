@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Car, Palette, Gauge, ShoppingCart, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Car, Palette, Gauge, CalendarCheck, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function CarCard({ car }) {
@@ -31,7 +31,7 @@ export default function CarCard({ car }) {
     ? Number(price).toLocaleString("ar-EG") + " ج.م"
     : "السعر عند الاستفسار";
 
-  const handleAddToCart = (e) => {
+  const handleBook = (e) => {
     e.preventDefault(); // prevent Link navigation
     if (isInCart(id)) return;
     addToCart(car);
@@ -39,7 +39,7 @@ export default function CarCard({ car }) {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const alreadyInCart = isInCart(id);
+  const alreadyBooked = isInCart(id);
 
   return (
     <div
@@ -87,20 +87,20 @@ export default function CarCard({ car }) {
           )}
         </div>
 
-        {/* Add to cart quick button */}
+        {/* Quick book button (hover) */}
         <button
-          onClick={handleAddToCart}
+          onClick={handleBook}
           className={`absolute bottom-3 left-3 w-9 h-9 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 ${
-            alreadyInCart
+            alreadyBooked
               ? "bg-green-500 text-white"
               : "bg-white text-orange-500 hover:bg-orange-500 hover:text-white"
           }`}
-          title={alreadyInCart ? "في السلة" : "إضافة للسلة"}
+          title={alreadyBooked ? "محجوز" : "احجز السيارة"}
         >
-          {alreadyInCart ? (
+          {alreadyBooked ? (
             <CheckCircle2 size={16} />
           ) : (
-            <ShoppingCart size={16} />
+            <CalendarCheck size={16} />
           )}
         </button>
       </div>
@@ -145,23 +145,23 @@ export default function CarCard({ car }) {
 
         {/* Actions */}
         <div className="mt-auto flex gap-2">
-          {/* Add to cart */}
+          {/* Book button */}
           <button
-            onClick={handleAddToCart}
+            onClick={handleBook}
             className={`addTocart flex items-center justify-center gap-1.5 px-3 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-              alreadyInCart
-                ? "bg-green-50 text-green-600 border border-green-200"
+              alreadyBooked
+                ? "bg-green-50 text-green-600 border border-green-200 cursor-default"
                 : added
                 ? "bg-green-50 text-green-600 border border-green-200"
                 : "bg-orange-50 text-orange-600 border border-orange-100 hover:bg-orange-500 hover:text-white hover:border-orange-500"
             }`}
           >
-            {alreadyInCart ? (
-              <><CheckCircle2 size={14} /> في السلة</>
+            {alreadyBooked ? (
+              <><CheckCircle2 size={14} /> محجوز</>
             ) : added ? (
-              <><CheckCircle2 size={14} /> تمت!</>
+              <><CheckCircle2 size={14} /> تم الحجز!</>
             ) : (
-              <><ShoppingCart size={14} /> أضف</>
+              <><CalendarCheck size={14} /> احجز</>
             )}
           </button>
 

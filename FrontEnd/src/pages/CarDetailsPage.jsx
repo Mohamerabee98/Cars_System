@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Car,
   ChevronLeft,
-  ShoppingCart,
+  CalendarCheck,
   Calendar,
   ArrowRight,
   CheckCircle2,
@@ -191,7 +191,7 @@ export default function CarDetailsPage() {
                 <button
                   onClick={() => {
                     if (isInCart(carData.id)) {
-                      navigate("/cart");
+                      navigate("/bookings");
                     } else {
                       addToCart(carData);
                       setAddedFeedback(true);
@@ -204,13 +204,13 @@ export default function CarDetailsPage() {
                       : "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200"
                   }`}
                 >
-                  <ShoppingCart size={20} />
+                  <CalendarCheck size={20} />
                   <span>
                     {isInCart(carData.id)
-                      ? "عرض السلة ←"
+                      ? "عرض الحجوزات ←"
                       : addedFeedback
-                      ? "✓ تمت الإضافة!"
-                      : "إضافة إلى السلة"}
+                      ? "✓ تم الحجز!"
+                      : "احجز السيارة"}
                   </span>
                 </button>
 
