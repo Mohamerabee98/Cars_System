@@ -15,18 +15,11 @@ export default function Topbar({ onOpenSidebar }) {
           <Menu size={18} />
         </button>
 
-        <button className="icon-btn">
-          <Bell size={18} />
-        </button>
+    
 
-        <div className="search-wrap ">
-          <Search size={18} className="search-icon" />
-          <input className="search-input" placeholder="ابحث عن رقم لوحة..." />
-        </div>
+       
       </div>
-      <div className="text-end d-none d-lg-block">
-        <div className="page-title">لوحة التحكم</div>
-      </div>
+    
     </header>
   );
 }

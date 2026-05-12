@@ -18,7 +18,7 @@ const DashboardHome = () => {
 
   const token = localStorage.getItem("token");
 
-  // 🧪 REALISTIC FALLBACK DATA
+  //  REALISTIC FALLBACK DATA
   const fallbackCars = [
     { id: 1, company: "Toyota", price: 200000, stock: 5 },
     { id: 2, company: "BMW", price: 550000, stock: 2 },
@@ -40,7 +40,7 @@ const DashboardHome = () => {
     { id: 10, sale_date: "2026-02-15", total_price: 350000, Car: { company: "Mercedes" }, Customer: { name: "Ahmed Mostafa" } },
   ];
 
-  // 🔗 API FETCH
+  //  API FETCH
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -69,7 +69,7 @@ const DashboardHome = () => {
     fetchData();
   }, [fetchData]);
 
-  // 🔥 FILTER
+  //  FILTER
   const filteredSales = useMemo(() => {
     const now = new Date();
 
@@ -83,7 +83,7 @@ const DashboardHome = () => {
     });
   }, [filter, sales]);
 
-  // 🔥 ANALYTICS
+  //  ANALYTICS
   const analytics = useMemo(() => {
     const carsCount = cars.length;
     const salesCount = filteredSales.length;

@@ -23,7 +23,7 @@ const {user} = useProfile()
       icon: LayoutDashboard,
       end: true,
     },
-    { label: "الحجوزات", to: "/dashboard/bookings", icon: CalendarCheck },
+    // { label: "الحجوزات", to: "/dashboard/bookings", icon: CalendarCheck },
     { label: "المغسلة", to: "/dashboard/cars", icon: Car },
     { label: "المخزون", to: "/dashboard/inventory", icon: Boxes },
     { label: "الخدمات والأسعار", to: "/dashboard/services-prices", icon: Tags },
@@ -35,7 +35,7 @@ const {user} = useProfile()
       icon: PackagePlus,
     },
     { label: "التقارير", to: "/dashboard/reports", icon: FileText },
-    { label: "الإعدادات", to: "/dashboard/settings", icon: Settings },
+    // { label: "الإعدادات", to: "/dashboard/settings", icon: Settings },
   ];
 
  const handleCloseOffcanvas = () => {

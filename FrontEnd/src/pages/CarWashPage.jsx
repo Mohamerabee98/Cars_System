@@ -367,6 +367,11 @@ export default function CarWashPage() {
                 categoryImages[category] ||
                 categoryImages["default"];
 
+
+                const isActive = service.status === true || service.status === "active";
+
+if (!isActive) return null;
+
               return (
                 <div
                   key={service.id}

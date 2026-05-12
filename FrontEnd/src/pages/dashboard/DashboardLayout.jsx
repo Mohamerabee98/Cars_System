@@ -1,4 +1,3 @@
-
 import Sidebar from "../../components/dashboardComp/Sidebar";
 import Topbar from "../../components/dashboardComp/Topbar";
 import { Outlet } from "react-router-dom";
@@ -17,8 +16,7 @@ export default function DashboardLayout() {
       <div
         className="offcanvas offcanvas-end dash-offcanvas"
         tabIndex="-1"
-          id="dashboardSidebar"
-
+        id="dashboardSidebar"
       >
         <div className="offcanvas-body p-0">
           <Sidebar />
@@ -26,10 +24,26 @@ export default function DashboardLayout() {
       </div>
 
       <main className="dash-main">
-        {/* <Topbar /> */}
-        <div className="dash-content container-fluid"><Outlet /></div>
+
+        {/* Topbar يظهر فقط تحت lg (موبايل + تابلت) */}
+        <div className="d-lg-none">
+          <Topbar
+            onOpenSidebar={() => {
+              const el = document.getElementById("dashboardSidebar");
+              if (el) {
+                const bsOffcanvas =
+                  window.bootstrap?.Offcanvas?.getOrCreateInstance(el);
+                bsOffcanvas?.show();
+              }
+            }}
+          />
+        </div>
+
+        <div className="dash-content container-fluid">
+          <Outlet />
+        </div>
       </main>
 
     </div>
   );
-}
+} 
