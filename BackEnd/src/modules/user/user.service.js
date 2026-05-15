@@ -4,7 +4,7 @@ import { resMsg } from "../../utils/globaleMessage.js";
 
 
 export const getUsers = async (req, res, next) => {
-    const { id, role } = req.user;
+    // const { id, role } = req.user;
     const users = await Customer.findAll();
     return resMsg(res, 200, "Get profile success", users);
 
@@ -37,25 +37,43 @@ export const getUserProfile = async (req, res, next) => {
 
 // update profile
 export const updateProfile = async (req, res, next) => {
+  try {
     const { id, role } = req.user;
-    const { role: disable, password, ...body } = req.body
-    if (role === "customer") {
-        const customer = await Customer.findByPk(id, { attributes: { exclude: ["password"] } });
-        if (!customer)
-            return next(new Error("cusromer Not Found", { cause: 404 }));
-        await customer.update(body)
-        resMsg(res, 200, "profile update success", customer);
-    };
+    
+    const { role: disable, password, ...body } = req.body;
 
-    if (role === "employee") {
-        const employee = await Employee.findByPk(id, { attributes: { exclude: ["password"] } });
-        if (!employee)
-            return next(new Error("Employee Not Found", { cause: 404 }));
-        await employee.update(body)
-        resMsg(res, 200, "profile update success", employee);
+    let updatedUser;
+
+    if (role === "customer") {
+      const customer = await Customer.findByPk(id, {
+        attributes: { exclude: ["password"] },
+      });
+
+      if (!customer)
+        return next(new Error("Customer Not Found", { cause: 404 }));
+
+      updatedUser = await customer.update(body);
+    } 
+    else if (role === "employee") {
+      const employee = await Employee.findByPk(id, {
+        attributes: { exclude: ["password"] },
+      });
+
+      if (!employee)
+        return next(new Error("Employee Not Found", { cause: 404 }));
+
+      updatedUser = await employee.update(body);
+    } 
+    else {
+      return next(new Error("Invalid role", { cause: 400 }));
     }
 
-}
+    return resMsg(res, 200, "profile update success", updatedUser);
+
+  } catch (err) {
+    next(err);
+  }
+};
 
 // delete account
 export const deleteAccount = async (req, res, next) => {

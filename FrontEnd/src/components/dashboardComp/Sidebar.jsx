@@ -9,12 +9,20 @@ import {
   PackagePlus,
   FileText,
   Settings,
+  LogOut,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 import { useProfile } from "../../hook/profile";
 export default function Sidebar() {
-const {user} = useProfile()
+  const { user } = useProfile();
+  const navigate = useNavigate();
+
+  const displayName = user?.name?.trim() || user?.email?.trim() || "مستخدم";
+  const initial =
+    displayName.replace(/[^\p{L}\p{N}]/gu, "").charAt(0) ||
+    displayName.charAt(0) ||
+    "؟";
 
   const navItems = [
     {
@@ -38,32 +46,38 @@ const {user} = useProfile()
     { label: "الإعدادات", to: "/dashboard/settings", icon: Settings },
   ];
 
- const handleCloseOffcanvas = () => {
-  const offcanvasEl = document.getElementById("dashboardSidebar");
-  if (!offcanvasEl) return;
+  const handleCloseOffcanvas = () => {
+    const offcanvasEl = document.getElementById("dashboardSidebar");
+    if (!offcanvasEl) return;
 
-  const bsOffcanvas = Offcanvas.getOrCreateInstance(offcanvasEl);
-  bsOffcanvas.hide();
+    const bsOffcanvas = Offcanvas.getOrCreateInstance(offcanvasEl);
+    bsOffcanvas.hide();
 
-  setTimeout(() => {
-    offcanvasEl.classList.remove("show");
+    setTimeout(() => {
+      offcanvasEl.classList.remove("show");
 
-    document
-      .querySelectorAll(".offcanvas-backdrop")
-      .forEach((el) => el.remove());
+      document
+        .querySelectorAll(".offcanvas-backdrop")
+        .forEach((el) => el.remove());
 
-    document.body.classList.remove("modal-open");
-    document.body.style.overflow = "";
-    document.body.style.paddingRight = "";
-  }, 200);
-};
+      document.body.classList.remove("modal-open");
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }, 200);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    handleCloseOffcanvas();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="sidebar-wrap d-flex flex-column h-100">
       <div className="sidebar-brand px-3 pt-3">
         <div className="brand-box">
           <div className="brand-title">نايل كلين للسيارات</div>
-          <div className="brand-subtitle">نظام ادارة  </div>
+          <div className="brand-subtitle">نظام ادارة </div>
         </div>
       </div>
 
@@ -88,16 +102,28 @@ const {user} = useProfile()
         })}
       </nav>
 
-      <div className="sidebar-user p-3">
-        <div className="user-card d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-2">
-            <div className="user-avatar">م</div>
-            <div className="text-end">
-              <div className="user-name">{user?.name}</div>
-              <div className="user-role">مدير النظام</div>
+      <div className="sidebar-user px-3 pb-3 pt-1">
+        <div className="user-card">
+          <div className="d-flex align-items-center gap-3">
+            <div className="user-avatar" aria-hidden>
+              {initial}
+            </div>
+            <div className="user-meta text-end flex-grow-1 min-w-0">
+              <div className="user-name text-truncate" title={displayName}>
+                {displayName}
+              </div>
+              <div className="user-role-label text-truncate">مدير النظام</div>
             </div>
           </div>
-          <button className="user-logout">⎋</button>
+          <button
+            type="button"
+            className="user-logout-full w-100 mt-3"
+            dir="rtl"
+            onClick={handleLogout}
+          >
+            <span>LogOut</span>
+            <LogOut size={17} strokeWidth={2} aria-hidden />
+          </button>
         </div>
       </div>
     </div>
