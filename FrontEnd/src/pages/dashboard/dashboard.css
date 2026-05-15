@@ -96,93 +96,38 @@
 }
 
 .user-card{
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: var(--radius);
-  padding: 12px 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  padding: 10px 12px;
 }
 
 .user-avatar{
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  border-radius: 12px;
-  background: linear-gradient(145deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
-  border: 1px solid rgba(255,255,255,.18);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.2);
   display: grid;
   place-items: center;
-  font-weight: 800;
-  font-size: 1rem;
-  color: #fff;
+  font-weight: 700;
 }
 
 .user-name{
   font-weight: 700;
-  font-size: 0.95rem;
-  line-height: 1.25;
+}
+
+.user-role{
+  font-size: 12px;
+  opacity: .85;
+}
+
+.user-logout{
+  border: 0;
+  background: rgba(255,255,255,.14);
   color: #fff;
-}
-
-.user-role-label{
-  font-size: 11px;
-  opacity: 0.72;
-  margin-top: 2px;
-  color: rgba(255,255,255,.92);
-}
-
-.user-meta{
-  min-width: 0;
-}
-
-.user-logout-btn{
-  flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,.2);
-  background: rgba(255,255,255,.1);
-  color: #fff;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: background .18s ease, border-color .18s ease, transform .12s ease;
-}
-
-.user-logout-btn:hover{
-  background: rgba(239, 68, 68, 0.35);
-  border-color: rgba(252, 165, 165, 0.55);
-  color: #fff;
-}
-
-.user-logout-btn:active{
-  transform: scale(0.96);
-}
-
-.user-logout-full{
-  border: 1px solid rgba(255,255,255,.22);
-  background: rgba(255,255,255,.08);
-  color: #fff;
-  border-radius: 11px;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  cursor: pointer;
-  transition: background .18s ease, border-color .18s ease, transform .1s ease;
-}
-
-.user-logout-full:hover{
-  background: rgba(239, 68, 68, 0.28);
-  border-color: rgba(252, 165, 165, 0.45);
-  color: #fff;
-}
-
-.user-logout-full:active{
-  transform: scale(0.98);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
 }
 
 /* Topbar */
@@ -805,4 +750,3 @@ html, body {
   background: var(--dash-bg);
   overflow: visible !important;
 }
-
