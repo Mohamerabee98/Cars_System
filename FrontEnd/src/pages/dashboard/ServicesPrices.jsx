@@ -484,3 +484,4 @@ const ServicesPrices = () => {
 };
 
 export default ServicesPrices;
+

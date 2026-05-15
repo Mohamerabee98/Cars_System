@@ -46,6 +46,50 @@ export const register = async (req, res ) => {
 };
 
 // login
+// export const Login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     if (!email || !password) {
+//       return res.status(400).json({
+//         message: "من فضلك ادخل الايميل والباسورد",
+//       });
+//     }
+
+//     const user = await Customer.findOne({ where: { email } });
+
+//     if (!user) {
+//       return res.status(401).json({
+//         message: "Email or password is incorrect",
+//       });
+//     }
+
+    
+//     const isMatch = await bcrypt.compare(password, user.password);
+
+//     if (!isMatch) {
+//       return res.status(401).json({
+//         message: "Email or password is incorrect",
+//       });
+//     };
+
+//         const token = jwt.sign({ id: user.id, role: user.role  }, "secret", { expiresIn: "7d" })
+//         res.status(200).json({
+//           message: "Login successful",
+//           user: {
+//             id: user.id,
+//             name: user.name,
+//             email: user.email,
+//             phone: user.phone,
+//             role: user.role,
+//             token
+//           }
+//         });
+
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
 export const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -64,27 +108,35 @@ export const Login = async (req, res) => {
       });
     }
 
-    
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({
         message: "Email or password is incorrect",
       });
-    };
+    }
 
-        const token = jwt.sign({ id: user.id, role: user.role }, "secret", { expiresIn: "7d" })
-        res.status(200).json({
-          message: "Login successful",
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-            token
-          }
-        });
+  
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role || "customer", // fallback
+      },
+      "secret",
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        token,
+      },
+    });
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
