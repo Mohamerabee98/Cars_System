@@ -13,31 +13,33 @@ import Settings from "../pages/dashboard/Settings";
 import DashInventory from "../pages/dashboard/DashInventory";
 import AddToInventory from "../pages/dashboard/AddToInventory";
 import '../pages/dashboard/style/DashStyle.css';
+import { AdminRoute } from "../utils/protectedRoute";
 
 export default function DashboardRoutes() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<DashboardLayout />}>
-      
-        <Route index element={<DashboardHome />} />
+      <Route element={<AdminRoute />}>
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
 
-        <Route path="bookings" element={<Bookings />} />
+          <Route path="bookings" element={<Bookings />} />
 
-        <Route path="cars" element={<DashCars />} />
+          <Route path="cars" element={<DashCars />} />
 
-        <Route path="services-prices" element={<ServicesPrices />} />
+          <Route path="services-prices" element={<ServicesPrices />} />
 
-        <Route path="customers" element={<Customers />} />
+          <Route path="customers" element={<Customers />} />
 
-        <Route path="sales" element={<Sales />} />
+          <Route path="sales" element={<Sales />} />
 
-        <Route path="inventory" element={<DashInventory />} />
+          <Route path="inventory" element={<DashInventory />} />
 
-        <Route path="add-to-inventory" element={<AddToInventory />} />
+          <Route path="add-to-inventory" element={<AddToInventory />} />
 
-        <Route path="reports" element={<Reports />} />
+          <Route path="reports" element={<Reports />} />
 
-        <Route path="settings" element={<Settings />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
       </Route>
     </Routes>
   );

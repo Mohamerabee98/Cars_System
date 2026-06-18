@@ -31,9 +31,9 @@ const fallbackSales = [
 const Reports = () => {
 
   const { stats, cars, sales } = useReport();
-  const allCars = cars ? cars : fallbackCars;
-  const allSales = sales ? sales : fallbackSales
-
+  const allCars = cars.length > 1 ? cars : fallbackCars;
+  const allSales = sales.length > 1 ? sales : fallbackSales
+  
   const StatCard = ({ title, value, icon: Icon }) => (
     <div className='bg-white rounded-2xl shadow p-5  flex items-center flex-col relative'>
       <div className='flex items-center justify-center gap-8 '>

@@ -7,6 +7,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { cartItems } = useCart();
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
 
   const linkClass = () =>
     `text-base font-medium transition-colors duration-200 text-gray-400 hover:text-orange-500`;
@@ -36,6 +38,14 @@ export default function Navbar() {
           <li>
             <NavLink to="/contact" className={linkClass}>تواصل معنا</NavLink>
           </li>
+          {
+            user && user?.role === "admin" ?
+              <li>
+                <NavLink to="/dashboard" className={linkClass}>لوحة التحكم</NavLink>
+              </li> : ""
+          }
+
+
         </ul>
 
         {/* Action Icons */}
